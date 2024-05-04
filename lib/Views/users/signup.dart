@@ -19,7 +19,8 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+    final authProvider =
+        Provider.of<AuthenticationProvider>(context, listen: false);
 
     return Scaffold(
       body: Builder(
@@ -36,100 +37,162 @@ class SignUp extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 170.0),
                       child: Center(
-                        child: Container(
-                          height: 470,
-                          width: 370,
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(10),
-                            color: HexColor('F8AFAF').withOpacity(0.12),
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                "CREATE ACCOUNT",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: GoogleFonts.lora().fontFamily,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              TextField(
-                                controller: fullNameController,
-                                decoration: InputDecoration(
-                                  hintText: "Full Name",
-                                ),
-                              ),
-                              TextField(
-                                controller: ageController,
-                                decoration: InputDecoration(
-                                  hintText: "Age",
-                                ),
-                              ),
-                              TextField(
-                                controller: genderController,
-                                decoration: InputDecoration(
-                                  hintText: "Gender",
-                                ),
-                              ),
-                              TextField(
-                                controller: phoneNumberController,
-                                decoration: InputDecoration(
-                                  hintText: "Phone Number",
-                                ),
-                              ),
-                              TextField(
-                                controller: mailIDController,
-                                decoration: InputDecoration(
-                                  hintText: "Mail ID",
-                                ),
-                              ),
-                              TextField(
-                                controller: passwordController,
-                                obscureText: true,
-                                decoration: InputDecoration(
-                                  hintText: "Password",
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  bool signUpSuccess = await authProvider.signUp(
-                                    fullNameController.text,
-                                    ageController.text,
-                                    genderController.text,
-                                    phoneNumberController.text,
-                                    mailIDController.text,
-                                    passwordController.text,
-                                    context,
-                                  ); // <- Add a semicolon here
-                                  if (signUpSuccess) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => BottomNavBar(),
-                                      ),
-                                    );
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            'Sign up failed. Please try again.'),
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: Text("SIGN UP"),
-                              ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            height: 470,
+                            width: 370,
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10),
+                              color: HexColor('F8AFAF').withOpacity(0.12),
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
 
-                            ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 5.0,bottom: 5),
+                                    child: Text(
+                                      "CREATE ACCOUNT",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: GoogleFonts.lora().fontFamily,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+
+                                  Card(
+                                    child: TextField(
+                                      controller: fullNameController,
+                                      decoration: const InputDecoration(
+                                          hintText: "Full Name",
+                                          filled: true,
+                                          isDense: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none)),
+                                    ),
+                                  ),
+                                  Card(
+                                    child: TextField(
+                                      controller: ageController,
+                                      decoration: const InputDecoration(
+                                          hintText: "Age",
+                                          filled: true,
+                                          isDense: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none)),
+                                    ),
+                                  ),
+                                  Card(
+                                    child: TextField(
+                                      controller: genderController,
+                                      decoration: const InputDecoration(
+                                          hintText: "Gender",
+                                          filled: true,
+                                          isDense: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none)),
+                                    ),
+                                  ),
+                                  Card(
+                                    child: TextField(
+                                      controller: phoneNumberController,
+                                      decoration: const InputDecoration(
+                                          hintText: "Phone Number",
+                                          filled: true,
+                                          isDense: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none)),
+                                    ),
+                                  ),
+                                  Card(
+                                    child: TextField(
+                                      controller: mailIDController,
+                                      decoration: const InputDecoration(
+                                          hintText: "Mail ID",
+                                          filled: true,
+                                          isDense: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none)),
+                                    ),
+                                  ),
+                                  Card(
+                                    child: TextField(
+                                      controller: passwordController,
+                                      obscureText: true,
+                                      decoration: const InputDecoration(
+                                          hintText: "Password",
+                                          filled: true,
+                                          isDense: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none)),
+                                    ),
+                                  ),
+
+                                  InkWell(
+                                    onTap: ()  {
+                                      authProvider.signUp(
+                                        fullNameController.text,
+                                        ageController.text,
+                                        genderController.text,
+                                        phoneNumberController.text,
+                                        mailIDController.text,
+                                        passwordController.text,
+                                        context,
+                                      ); // <- Add a semicolon here
+
+                                    },
+                                    child: Card(
+                                      elevation: 8,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        height: 38,
+                                        width: 106,
+                                        decoration: BoxDecoration(
+                                          boxShadow: const [
+                                            BoxShadow(
+                                                offset: Offset(2, 2),
+                                                blurRadius: 3,
+                                                color: Colors.grey)
+                                          ],
+                                          color: HexColor("C0A0A0"),
+                                        ),
+                                        child: const Text(
+                                          "SIGN IN",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),

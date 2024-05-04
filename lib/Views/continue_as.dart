@@ -22,9 +22,9 @@ class Continue_As extends StatelessWidget {
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.only(top: 170),
+            padding:  EdgeInsets.only(top: 175),
             child: SingleChildScrollView(
-              child: Column(
+              child: Column(mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -91,7 +91,7 @@ class Continue_As extends StatelessWidget {
                                     color: HexColor("C0A0A0"),
                                   ),
                                   child: const Text(
-                                    "User",
+                                    "Admin",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600,
@@ -112,7 +112,7 @@ class Continue_As extends StatelessWidget {
                                     color: HexColor("C0A0A0"),
                                   ),
                                   child: const Text(
-                                    "Admin",
+                                    "User",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600,

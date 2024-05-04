@@ -1,98 +1,88 @@
+import 'dart:async';
+
+import 'package:bookverse/Views/users/bottomnavbar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../Model/user_model.dart';
+
 class AuthenticationProvider with ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  UserModel? _userModel;
 
-  User? get currentUser => _firebaseAuth.currentUser;
+  UserModel get usermodel => _userModel!;
+
+  Future<void> saveUser(
+    String userId,
+    String fullName,
+    String age,
+    String gender,
+    String phoneNumber,
+    String email,
+  ) async {
+    final userDoc = _firebaseFirestore.collection("Users").doc(userId);
+    _userModel = UserModel(
+        userId: userId,
+        fullName: fullName,
+        age: age,
+        gender: gender,
+        phoneNumber: phoneNumber,
+        email: email);
+    await userDoc.set(_userModel!.toMap());
+  }
 
   Future signUp(
-      String fullName,
-      String age,
-      String gender,
-      String phoneNumber,
-      String email,
-      String password,
-      BuildContext? context,
-      ) async {
+    String fullName,
+    String age,
+    String gender,
+    String phoneNumber,
+    String email,
+    String password,
+    context,
+  ) async {
     try {
-      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      // Send email verification
-      await userCredential.user!.sendEmailVerification();
-
-      // Save user details
-      await _saveUser(
-        userCredential.user!.uid,
-        fullName,
-        age,
-        gender,
-        phoneNumber,
-        email,
-      );
-
-      // Show success message
-      ScaffoldMessenger.of(context!).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.white,
-          content: Text(
-            "Sign up successful",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-        ),
-      );
+      print('/////////////////////USER SIGNUP//////////////////////');
+      UserCredential userCredential = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
+      final user = _firebaseAuth.currentUser;
+      user!.sendEmailVerification();
+      await saveUser(user.uid, fullName, age, gender, phoneNumber, email);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Its Successfull")));
     } catch (e) {
-      // Handle sign-up errors
-      print("Sign up error: $e");
-      ScaffoldMessenger.of(context!).showSnackBar(
-        const SnackBar(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          backgroundColor: Colors.white,
-          content: Text(
-            "Sign up failed. Please try again.",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-        ),
-      );
+      print('////////////////////////SIGNUP ERROR///////////////////////////');
+      print(e);
     }
     notifyListeners();
   }
 
   Future<void> signIn(
-      String email,
-      String password,
-      BuildContext? context,
-      ) async {
+    String email,
+    String password,
+    context,
+  ) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+          email: email, password: password);
       final user = _firebaseAuth.currentUser;
-      final verified = user!.emailVerified;
-      if (!verified) {
-        ScaffoldMessenger.of(context!).showSnackBar(
-          const SnackBar(
-            content: Text("Please verify your email or password."),
-          ),
-        );
+      final emailveri = user!.emailVerified;
+      if (emailveri == false) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please verifie your email")));
       } else {
-        // Navigate to the next screen
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const BottomNavBar(),
+            ));
       }
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please varifie your email!!!')));
     } catch (e) {
-      // Handle sign-in errors
-      print("Sign in error: $e");
-      ScaffoldMessenger.of(context!).showSnackBar(
-        const SnackBar(
-          content: Text("Sign in failed. Please try again."),
-        ),
-      );
+      print(e);
     }
     notifyListeners();
   }
@@ -102,22 +92,4 @@ class AuthenticationProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _saveUser(
-      String userId,
-      String fullName,
-      String age,
-      String gender,
-      String phoneNumber,
-      String email,
-      ) async {
-    final userDoc = _firebaseFirestore.collection("Users").doc(userId);
-    final userData = {
-      'fullName': fullName,
-      'age': age,
-      'gender': gender,
-      'phoneNumber': phoneNumber,
-      'email': email,
-    };
-    await userDoc.set(userData);
-  }
 }

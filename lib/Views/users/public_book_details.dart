@@ -13,7 +13,7 @@ import 'DELIVERY_DETAILS.dart';
 class PublictionBooksDetail extends StatelessWidget {
   final String img;
 
-  const PublictionBooksDetail({Key? key, required this.img}) : super(key: key);
+  const PublictionBooksDetail({Key? key, required this.img, }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

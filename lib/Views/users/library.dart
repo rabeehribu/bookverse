@@ -21,13 +21,10 @@ class UserLibrary extends StatelessWidget {
       {'image': 'assets/alipore.jpeg','title':"NATIONAL LIBRARY OF INDIA, KOLKATA"},
       {'image': 'assets/4books.jpg','title':"NATIONAL LIBRARY OF INDIA, KOLKATA"},
       {'image': 'assets/National_Library,_Calcutta_2007 1.png','title':"NATIONAL LIBRARY OF INDIA, KOLKATA"},
-      {'image': 'assets/National_Library,_Calcutta_2007 1.png','title':"NATIONAL LIBRARY OF INDIA, KOLKATA"},
-      {'image': 'assets/National_Library,_Calcutta_2007 1.png','title':"NATIONAL LIBRARY OF INDIA, KOLKATA"},
-      {'image': 'assets/National_Library,_Calcutta_2007 1.png','title':"NATIONAL LIBRARY OF INDIA, KOLKATA"},
-      {'image': 'assets/National_Library,_Calcutta_2007 1.png','title':"NATIONAL LIBRARY OF INDIA, KOLKATA"},
-      {'image': 'assets/National_Library,_Calcutta_2007 1.png','title':"NATIONAL LIBRARY OF INDIA, KOLKATA"},
-      {'image': 'assets/National_Library,_Calcutta_2007 1.png','title':"NATIONAL LIBRARY OF INDIA, KOLKATA"},
-      {'image': 'assets/National_Library,_Calcutta_2007 1.png','title':"NATIONAL LIBRARY OF INDIA, KOLKATA"},
+      {'image': 'assets/3book.webp','title':"NATIONAL LIBRARY OF INDIA, KOLKATA"},
+      {'image': 'assets/alipore.jpeg','title':"NATIONAL LIBRARY OF INDIA, KOLKATA"},
+      {'image': 'assets/4books.jpg','title':"NATIONAL LIBRARY OF INDIA, KOLKATA"},
+
     ];
 
     return SafeArea(
@@ -107,48 +104,46 @@ class UserLibrary extends StatelessWidget {
                                   height:
                                       MediaQuery.of(context).size.width * .05,
                                 ),
-                                SizedBox(
-                                    height: 350,
-                                    child: ListView.builder(scrollDirection: Axis.vertical,
-                                      padding: const EdgeInsets.all(5),
-
-                                      itemCount: recommended.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 7),
-                                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              InkWell(onTap: () {
-                                                Navigator.push(context, MaterialPageRoute(builder: (context) => UserLibraryDetail(img:recommended[index]['image'],title:recommended[index]['title']),));
-                                              },
-                                                child: Card(
-                                                  elevation: 8,
-                                                  child: Container(height: MediaQuery.of(context).size.height*.30,width: MediaQuery.of(context).size.width,
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: AssetImage(
-                                                            recommended[index]
-                                                                ['image']),
-                                                        fit: BoxFit.cover, // Make sure the image covers the container
-                                                      ),
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(10),
-                                                    ),
+                                ListView.builder(scrollDirection: Axis.vertical,
+                                  padding: const EdgeInsets.all(5),
+                                  shrinkWrap: true,
+                                  itemCount: recommended.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 7),
+                                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          InkWell(onTap: () {
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => UserLibraryDetail(img:recommended[index]['image'],title:recommended[index]['title']),));
+                                          },
+                                            child: Card(
+                                              elevation: 8,
+                                              child: Container(height: MediaQuery.of(context).size.height*.30,width: MediaQuery.of(context).size.width,
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: AssetImage(
+                                                        recommended[index]
+                                                            ['image']),
+                                                    fit: BoxFit.cover, // Make sure the image covers the container
                                                   ),
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
                                                 ),
                                               ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 8.0),
-                                                child: Text(recommended[index]['title'],style: const TextStyle(fontWeight: FontWeight.bold,shadows: [Shadow(color: Colors.grey,offset: Offset(2, 2),blurRadius: 5)]),textAlign: TextAlign.center,),
-                                              ),
-
-                                            ],
+                                            ),
                                           ),
-                                        );
-                                      },
-                                    )),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 8.0),
+                                            child: Text(recommended[index]['title'],style: const TextStyle(fontWeight: FontWeight.bold,shadows: [Shadow(color: Colors.grey,offset: Offset(2, 2),blurRadius: 5)]),textAlign: TextAlign.center,),
+                                          ),
+
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
                               ],
                             ),
                           ),

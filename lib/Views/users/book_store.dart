@@ -220,37 +220,36 @@ class Bookstore extends StatelessWidget {
                                     height: MediaQuery.of(context)
                                                 .size
                                                 .height >=
-                                            485
-                                        ? 485
+                                            555
+                                        ? 555
                                         : MediaQuery.of(context).size.height,
                                     child: Padding(
                                       padding: const EdgeInsets.all(6.0),
                                       child: Container(
-                                       
+                                        height: 470,
+                                        width: 370,
+                                        padding:
+                                        const EdgeInsets.symmetric(horizontal: 16.0),
                                         decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: Colors.black),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: HexColor('F8AFAF')
-                                              .withOpacity(0.12),
+                                          border: Border.all(color: Colors.black),
+                                          borderRadius: BorderRadius.circular(10),
+                                          color: HexColor('F8AFAF').withOpacity(0.12),
                                         ),
                                         child: SingleChildScrollView(
                                           child: Column(
                                             children: [
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(
-                                                "BOOK DETAILS",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    color: HexColor("000000"),
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
+
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 5.0,bottom: 5),
+                                                child: Text(
+                                                  "CREATE ACCOUNT",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: GoogleFonts.lora().fontFamily,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                ),
                                               ),
                                               Card(
                                                   elevation: 4,
@@ -259,77 +258,156 @@ class Bookstore extends StatelessWidget {
                                                     width: 140,
                                                     decoration: BoxDecoration(
                                                         borderRadius:
-                                                            BorderRadius
-                                                                .circular(7),
+                                                        BorderRadius
+                                                            .circular(7),
                                                         color: Colors.white),
-                                                    child: Center(
-                                                      child: Image.asset(
-                                                          "assets/Framenew.png"),
-                                                    ),
+                                                    child: IconButton(onPressed: () {
+
+                                                    }, icon: Icon(Icons.image,size: 50,))
                                                   )),
-                                              const SizedBox(
-                                                width: 35,
+
+                                              Card(
+                                                child: TextField(
+                                                  // controller: fullNameController,
+                                                  decoration: const InputDecoration(
+                                                      hintText: "Book Name",
+                                                      filled: true,
+                                                      isDense: true,
+                                                      fillColor: Colors.white,
+                                                      enabledBorder: OutlineInputBorder(
+                                                          borderSide: BorderSide.none),
+                                                      focusedBorder: OutlineInputBorder(
+                                                          borderSide: BorderSide.none)),
+                                                ),
                                               ),
-                                              buildTextField("  Book name"),
-                                              buildTextField("  Author Name"),
-                                              buildTextField("  Add price"),
-                                              buildTextField("  Publisher"),
-                                              buildTextField("  Description"),
-                                              const SizedBox(
-                                                height: 5,
+                                              Card(
+                                                child: TextField(
+                                                  // controller: ageController,
+                                                  decoration: const InputDecoration(
+                                                      hintText: "Author Name",
+                                                      filled: true,
+                                                      isDense: true,
+                                                      fillColor: Colors.white,
+                                                      enabledBorder: OutlineInputBorder(
+                                                          borderSide: BorderSide.none),
+                                                      focusedBorder: OutlineInputBorder(
+                                                          borderSide: BorderSide.none)),
+                                                ),
                                               ),
+                                              Card(
+                                                child: TextField(
+                                                  // controller: genderController,
+                                                  decoration: const InputDecoration(
+                                                      hintText: "Add price",
+                                                      filled: true,
+                                                      isDense: true,
+                                                      fillColor: Colors.white,
+                                                      enabledBorder: OutlineInputBorder(
+                                                          borderSide: BorderSide.none),
+                                                      focusedBorder: OutlineInputBorder(
+                                                          borderSide: BorderSide.none)),
+                                                ),
+                                              ),
+                                              Card(
+                                                child: TextField(
+                                                  // controller: phoneNumberController,
+                                                  decoration: const InputDecoration(
+                                                      hintText: "Publisher",
+                                                      filled: true,
+                                                      isDense: true,
+                                                      fillColor: Colors.white,
+                                                      enabledBorder: OutlineInputBorder(
+                                                          borderSide: BorderSide.none),
+                                                      focusedBorder: OutlineInputBorder(
+                                                          borderSide: BorderSide.none)),
+                                                ),
+                                              ),
+                                              Card(
+                                                child: TextField(
+                                                  // controller: mailIDController,
+                                                  decoration: const InputDecoration(
+                                                      hintText: "Description",
+                                                      filled: true,
+                                                      isDense: true,
+                                                      fillColor: Colors.white,
+                                                      enabledBorder: OutlineInputBorder(
+                                                          borderSide: BorderSide.none),
+                                                      focusedBorder: OutlineInputBorder(
+                                                          borderSide: BorderSide.none)),
+                                                ),
+                                              ),
+
                                               InkWell(
-                                                onTap: () {  showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(8)),
-                                                      backgroundColor: HexColor('C0A0A0'),
-                                                      title:  Text(
-                                                        "Are you sure,\nYou want to sell your book here?",
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight: FontWeight.bold,
-                                                            fontFamily: GoogleFonts.abhayaLibre().fontFamily,
-                                                            fontSize: 19),
-                                                      ),
-                                                      actions:  [
-                                                        Text(
-                                                          "Cancel",
-                                                          style: TextStyle(fontWeight: FontWeight.bold),
-                                                        ),
-                                                        Text(
-                                                          "CONFIRM",
-                                                          style: TextStyle(
-                                                              fontSize: 17,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Colors.white,
-                                                              fontFamily: GoogleFonts.abhayaLibre().fontFamily,
-                                                              shadows: [
-                                                                Shadow(
-                                                                    offset: Offset(3, 3),
-                                                                    color: Colors.black)
-                                                              ]),
-                                                        )
-                                                      ],
-                                                    );
-                                                  },);},
+                                                onTap: ()  {
+                                                  // authProvider.signUp(
+                                                  //   fullNameController.text,
+                                                  //   ageController.text,
+                                                  //   genderController.text,
+                                                  //   phoneNumberController.text,
+                                                  //   mailIDController.text,
+                                                  //   passwordController.text,
+                                                  //   context,
+                                                  // ); // <- Add a semicolon here
+
+                                                },
                                                 child: Card(
-                                                  elevation: 4,
-                                                  child: Container(
-                                                    alignment: Alignment.center,
-                                                    height: 38,
-                                                    width: 126,
-                                                    decoration: BoxDecoration(
-                                                      color: HexColor("C0A0A0"),
-                                                    ),
-                                                    child: const Text(
-                                                      "Sell Now",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w600,
+                                                  elevation: 8,
+                                                  child: InkWell(onTap: (){
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return AlertDialog(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(8)),
+                                                          backgroundColor: HexColor('C0A0A0'),
+                                                          title: const Text(
+                                                            "Are you sure,\nYou want to sell your book here?",
+                                                            style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.bold,
+                                                                fontSize: 19),
+                                                          ),
+                                                          actions: const [
+                                                            Text(
+                                                              "Cancel",
+                                                              style: TextStyle(fontWeight: FontWeight.bold),
+                                                            ),
+                                                            Text(
+                                                              "CONFIRM",
+                                                              style: TextStyle(
+                                                                  fontSize: 17,
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Colors.white,
+                                                                  shadows: [
+                                                                    Shadow(
+                                                                        offset: Offset(3, 3),
+                                                                        color: Colors.black)
+                                                                  ]),
+                                                            )
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                    child: Container(
+                                                      alignment: Alignment.center,
+                                                      height: 38,
+                                                      width: 106,
+                                                      decoration: BoxDecoration(
+                                                        boxShadow: const [
+                                                          BoxShadow(
+                                                              offset: Offset(2, 2),
+                                                              blurRadius: 3,
+                                                              color: Colors.grey)
+                                                        ],
+                                                        color: HexColor("C0A0A0"),
+                                                      ),
+                                                      child: const Text(
+                                                        "Sell Now",
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight: FontWeight.w600,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),

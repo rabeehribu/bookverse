@@ -1,15 +1,8 @@
-import 'package:bookverse/Views/users/library_detail_page.dart';
+import 'package:bookverse/Views/users/public_book_details.dart';
 import 'package:bookverse/Views/users/publiction_detail_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:provider/provider.dart';
-
-import '../../Controller/Providers/provider.dart';
-import '../../widget_model/drwer.dart';
 
 class UsersPublications extends StatelessWidget {
   const UsersPublications({Key? key});
@@ -18,16 +11,17 @@ class UsersPublications extends StatelessWidget {
   Widget build(BuildContext context) {
     double scaleFactor = MediaQuery.of(context).textScaleFactor;
     double fontSize = 16 * scaleFactor;
-    List<Map<String, dynamic>> recommended = [
-      {'image': 'assets/dcb.png', 'title': "DC BOOKS"},
-      {'image': 'assets/curent.png', 'title': "CURRENT BOOKS"},
-      {'image': 'assets/mathrabhumi.png', 'title': "MATHRUBHUMI BOOKS"},
-      {'image': 'assets/flora.png', 'title': "FLORA BOOKS"},
+    List<Map<String, dynamic>> _data = [
+      {'image': 'assets/DCB2.png', 'title': "DC BOOKS"},
+      {'image': 'assets/flora2.png', 'title': "CURRENT BOOKS"},
+      {'image': 'assets/DCB2.png', 'title': "DC BOOKS"},
+      {'image': 'assets/flora2.png', 'title': "CURRENT BOOKS"},
     ];
 
     return SafeArea(
       child: Scaffold(
         body: CustomScrollView(
+          physics: NeverScrollableScrollPhysics(),
           slivers: [
             SliverToBoxAdapter(
               child: Stack(
@@ -61,78 +55,82 @@ class UsersPublications extends StatelessWidget {
                     padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.25,
                     ),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Card(
-                            elevation: 4,
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: "Search books",
-                                prefixIcon: const Icon(
-                                  Icons.search,
-                                  color: Colors.black,
-                                  size: 20,
-                                ),
-                                fillColor: Colors.white,
-                                filled: true,
-                                isDense: true,
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.circular(10),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Card(
+                              elevation: 4,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: "Search books",
+                                  prefixIcon: const Icon(
+                                    Icons.search,
+                                    color: Colors.black,
+                                    size: 20,
+                                  ),
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  isDense: true,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02),
-                        SizedBox(height: 305,
-                          child: GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, // Number of columns
-                              crossAxisSpacing: 10.0, // Spacing between columns
-                              mainAxisSpacing: 10.0, // Spacing between rows
+                          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                          GridView.builder(
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
                             ),
-
-                            itemCount: recommended.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GridTile(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    // Add your onTap functionality here
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Container(height: MediaQuery.of(context).size.height*.3,width:  MediaQuery.of(context).size.width*.5,decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),image: DecorationImage(fit: BoxFit.cover,image: AssetImage(recommended[index]['image'],)))
-
-
-                                        ),
-                                        Align(alignment: Alignment.bottomCenter,
-                                          child: Text(
-                                            recommended[index]['title'],
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                            shrinkWrap: true,
+                            physics: BouncingScrollPhysics(),
+                            itemCount: _data.length,
+                            itemBuilder: (context, index) {
+                              final item = _data[index];
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PublictionDetail(
+                                        img: item['image'], title: item['title'],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    Card(
+                                      child: Container(
+                                        height: MediaQuery.of(context).size.width * 0.4,
+                                        width: MediaQuery.of(context).size.width * 0.4,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(14),
+                                          image: DecorationImage(
+                                            fit: BoxFit.fitHeight,
+                                            image: AssetImage(item['image']),
                                           ),
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                    Text(item['title'])
+                                  ],
                                 ),
                               );
                             },
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],

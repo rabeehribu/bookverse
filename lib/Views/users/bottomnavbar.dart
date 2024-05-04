@@ -1,4 +1,3 @@
-import 'package:bookverse/Views/users/animated_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -38,9 +37,9 @@ class BottomNavBar extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               _buildNavItem(Icons.home, 'Home', 0, provider),
-                              _buildNavItem(Icons.menu_book_sharp, 'Shop', 1, provider),
-                              _buildNavItem(Icons.menu_book_sharp, 'Moments', 2, provider),
-                              _buildNavItem(Icons.store, 'Profile', 3, provider),
+                              _buildNavItem(Icons.library_books_outlined, 'Library', 1, provider),
+                              _buildNavItem(Icons.menu_book_sharp, 'Publications', 2, provider),
+                              _buildNavItem(Icons.store, 'Book store', 3, provider),
                             ],
                           ),
                         ),
