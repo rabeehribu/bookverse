@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../Model/user_model.dart';
 
-class AuthenticationProvider with ChangeNotifier {
+class UserAuthenticationProvider with ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   UserModel? _userModel;

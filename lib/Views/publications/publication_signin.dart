@@ -1,4 +1,6 @@
+import 'package:bookverse/Controller/library_controller.dart';
 import 'package:bookverse/Controller/user_controller.dart';
+import 'package:bookverse/Views/library/library_signup.dart';
 import 'package:bookverse/Views/users/forgotpassword.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,13 +9,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
-class SignIn extends StatelessWidget {
-   SignIn({Key? key}) : super(key: key);
+import '../../Controller/publication_controller.dart';
+
+class PublicationSignIn extends StatelessWidget {
+  PublicationSignIn({super.key});
   TextEditingController mailIDController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<UserAuthenticationProvider>(context, listen: false);
+    final publicationAuthProvider = Provider.of<PublicationAuthenticationProvider>(context, listen: false);
 
     return Scaffold(
       body: Stack(
@@ -57,7 +61,7 @@ class SignIn extends StatelessWidget {
                                 height:
                                 MediaQuery.of(context).size.height * 0.02,
                               ),
-                               Card(
+                              Card(
                                   elevation: 4,
                                   child: TextField(controller: mailIDController,
                                     decoration: const InputDecoration(
@@ -72,7 +76,7 @@ class SignIn extends StatelessWidget {
                                         focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide.none)),
                                   )),
-                               Card(
+                              Card(
                                   elevation: 4,
                                   child: TextField(controller: passwordController,
                                     decoration: const InputDecoration(
@@ -87,26 +91,26 @@ class SignIn extends StatelessWidget {
                                         focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide.none)),
                                   )),
-                             Padding(
-                               padding: const EdgeInsets.only(right: 8.0),
-                               child: Align(alignment: Alignment.centerRight,
-                                 child: InkWell(onTap: () {
-                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPassword(),));
-                                 },
-                                   child: Text("Forgot password?", style: TextStyle(
-                                     color: Colors.black,
-                                     fontWeight: FontWeight.w400,
-                                     fontFamily: GoogleFonts.lora().fontFamily,fontSize: 14,
-                                   ),),
-                                 ),
-                               ),
-                             ),
-                            
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Align(alignment: Alignment.centerRight,
+                                  child: InkWell(onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPassword(),));
+                                  },
+                                    child: Text("Forgot password?", style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: GoogleFonts.lora().fontFamily,fontSize: 14,
+                                    ),),
+                                  ),
+                                ),
+                              ),
+
                               const SizedBox(
                                 height: 5,
                               ),
                               InkWell(
-                                onTap: () {authProvider.signIn(mailIDController.text, passwordController.text, context);},
+                                onTap: () {publicationAuthProvider.signIn(mailIDController.text, passwordController.text, context);},
                                 child: Card(
                                   elevation: 8,
                                   child: Container(
@@ -131,6 +135,16 @@ class SignIn extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                              ),
+                              SizedBox(height: 12,),
+                              Row(mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text("i dont have an account"),
+                                  const SizedBox(width: 4,),
+                                  InkWell(onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => LibrarySignUp(),));
+                                  },child: const Text("Sign Up",style: TextStyle(fontWeight: FontWeight.bold),)),
+                                ],
                               )
                             ],
                           ),
@@ -138,6 +152,7 @@ class SignIn extends StatelessWidget {
                       ),
                     ),
                   ),
+
                 ],
               ),
             ),

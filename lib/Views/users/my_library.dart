@@ -384,7 +384,7 @@ class MyLibrary extends StatelessWidget {
                                                           fontFamily: GoogleFonts
                                                                   .abhayaLibre()
                                                               .fontFamily,
-                                                          shadows: [
+                                                          shadows: const [
                                                             Shadow(
                                                                 offset: Offset(
                                                                     3, 3),

@@ -1,4 +1,7 @@
+import 'package:bookverse/Controller/library_controller.dart';
 import 'package:bookverse/Controller/user_controller.dart';
+import 'package:bookverse/Views/library/library_home.dart';
+import 'package:bookverse/Views/library/library_signin.dart';
 import 'package:bookverse/Views/users/forgotpassword.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,13 +10,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
-class SignIn extends StatelessWidget {
-   SignIn({Key? key}) : super(key: key);
+class LibrarySignUp extends StatelessWidget {
+  LibrarySignUp({super.key});
   TextEditingController mailIDController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController libraryNameCntrl = TextEditingController();
+  TextEditingController locationController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<UserAuthenticationProvider>(context, listen: false);
+    final libraryAuthProvider = Provider.of<LibraryAuthenticationProvider>(context, listen: false);
 
     return Scaffold(
       body: Stack(
@@ -32,7 +37,7 @@ class SignIn extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 55),
                     child: Container(
-                      height: 290,
+                      height: 380,
                       width: 370,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black),
@@ -45,7 +50,7 @@ class SignIn extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                "SIGN IN",
+                                "SIGN UP",
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
@@ -57,11 +62,11 @@ class SignIn extends StatelessWidget {
                                 height:
                                 MediaQuery.of(context).size.height * 0.02,
                               ),
-                               Card(
+                              Card(
                                   elevation: 4,
                                   child: TextField(controller: mailIDController,
                                     decoration: const InputDecoration(
-                                        hintText: "email",
+                                        hintText: "Email",
                                         hintStyle: TextStyle(
                                             color: Colors.grey, fontSize: 14),
                                         filled: true,
@@ -72,7 +77,7 @@ class SignIn extends StatelessWidget {
                                         focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide.none)),
                                   )),
-                               Card(
+                              Card(
                                   elevation: 4,
                                   child: TextField(controller: passwordController,
                                     decoration: const InputDecoration(
@@ -87,26 +92,46 @@ class SignIn extends StatelessWidget {
                                         focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide.none)),
                                   )),
-                             Padding(
-                               padding: const EdgeInsets.only(right: 8.0),
-                               child: Align(alignment: Alignment.centerRight,
-                                 child: InkWell(onTap: () {
-                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPassword(),));
-                                 },
-                                   child: Text("Forgot password?", style: TextStyle(
-                                     color: Colors.black,
-                                     fontWeight: FontWeight.w400,
-                                     fontFamily: GoogleFonts.lora().fontFamily,fontSize: 14,
-                                   ),),
-                                 ),
-                               ),
-                             ),
-                            
+
+                              Card(
+                                  elevation: 4,
+                                  child: TextField(controller: libraryNameCntrl,
+                                    decoration: const InputDecoration(
+                                        hintText: "Library Name",
+                                        hintStyle: TextStyle(
+                                            color: Colors.grey, fontSize: 14),
+                                        filled: true,
+                                        isDense: true,
+                                        fillColor: Colors.white,
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide.none),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide.none)),
+                                  )),
+                              Card(
+                                  elevation: 4,
+                                  child: TextField(controller: locationController,
+                                    decoration: const InputDecoration(
+                                        hintText: "Location",
+                                        hintStyle: TextStyle(
+                                            color: Colors.grey, fontSize: 14),
+                                        filled: true,
+                                        isDense: true,
+                                        fillColor: Colors.white,
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide.none),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide.none)),
+                                  )),
+
                               const SizedBox(
                                 height: 5,
                               ),
                               InkWell(
-                                onTap: () {authProvider.signIn(mailIDController.text, passwordController.text, context);},
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Library_Home(),));
+                                  libraryAuthProvider.signUp(mailIDController.text,libraryNameCntrl.text,locationController.text, passwordController.text,context);
+                                  },
                                 child: Card(
                                   elevation: 8,
                                   child: Container(
@@ -131,6 +156,15 @@ class SignIn extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                              ),
+                              Row(mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("i have an account"),
+                                  SizedBox(width: 4,),
+                                  InkWell(onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => LibrarySignIn(),));
+                                  },child: Text("Sign In",style: TextStyle(fontWeight: FontWeight.bold),)),
+                                ],
                               )
                             ],
                           ),

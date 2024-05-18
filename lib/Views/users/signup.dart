@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
-import '../../Controller/user_bakend_servieces.dart';
+import '../../Controller/user_controller.dart';
 import '../admin/Publications.dart';
 import 'bottomnavbar.dart';
 
@@ -20,7 +20,7 @@ class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider =
-        Provider.of<AuthenticationProvider>(context, listen: false);
+        Provider.of<UserAuthenticationProvider>(context, listen: false);
 
     return Scaffold(
       body: Builder(

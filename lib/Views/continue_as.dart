@@ -1,4 +1,7 @@
 import 'package:bookverse/Views/admin/adminHomepage.dart';
+import 'package:bookverse/Views/library/library_signin.dart';
+import 'package:bookverse/Views/library/library_signup.dart';
+import 'package:bookverse/Views/publications/publication_signin.dart';
 import 'package:bookverse/Views/users/signin.dart';
 import 'package:bookverse/Views/users/signup.dart';
 import 'package:bookverse/Views/users/welcome.dart';
@@ -22,9 +25,10 @@ class Continue_As extends StatelessWidget {
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            padding:  EdgeInsets.only(top: 175),
+            padding: EdgeInsets.only(top: 175),
             child: SingleChildScrollView(
-              child: Column(mainAxisAlignment: MainAxisAlignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -67,7 +71,7 @@ class Continue_As extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 fontFamily: GoogleFonts.lora().fontFamily,
                                 fontSize:
-                                MediaQuery.of(context).size.width * 0.05,
+                                    MediaQuery.of(context).size.width * 0.05,
                                 shadows: const [
                                   Shadow(
                                       color: Colors.black,
@@ -81,13 +85,26 @@ class Continue_As extends StatelessWidget {
                               height: MediaQuery.of(context).size.height * 0.04,
                             ),
                             InkWell(
-                              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const AdminHome(),));},
-                              child: Card(elevation: 8,
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const AdminHome(),
+                                    ));
+                              },
+                              child: Card(
+                                elevation: 8,
                                 child: Container(
                                   alignment: Alignment.center,
                                   height: 38,
                                   width: 106,
-                                  decoration: BoxDecoration(boxShadow: const [BoxShadow(offset: Offset(2, 2),blurRadius: 3,color: Colors.grey)],
+                                  decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          offset: Offset(2, 2),
+                                          blurRadius: 3,
+                                          color: Colors.grey)
+                                    ],
                                     color: HexColor("C0A0A0"),
                                   ),
                                   child: const Text(
@@ -100,19 +117,109 @@ class Continue_As extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 5,),
+                            const SizedBox(
+                              height: 5,
+                            ),
                             InkWell(
-                              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const WelcomePage(),));},
-                              child: Card(elevation: 8,
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const WelcomePage(),
+                                    ));
+                              },
+                              child: Card(
+                                elevation: 8,
                                 child: Container(
                                   alignment: Alignment.center,
                                   height: 38,
                                   width: 106,
-                                  decoration: BoxDecoration(boxShadow: const [BoxShadow(offset: Offset(2, 2),blurRadius: 3,color: Colors.grey)],
+                                  decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          offset: Offset(2, 2),
+                                          blurRadius: 3,
+                                          color: Colors.grey)
+                                    ],
                                     color: HexColor("C0A0A0"),
                                   ),
                                   child: const Text(
                                     "User",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LibrarySignIn(),
+                                    ));
+                              },
+                              child: Card(
+                                elevation: 8,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  height: 38,
+                                  width: 106,
+                                  decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          offset: Offset(2, 2),
+                                          blurRadius: 3,
+                                          color: Colors.grey)
+                                    ],
+                                    color: HexColor("C0A0A0"),
+                                  ),
+                                  child: const Text(
+                                    "Library",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+
+
+                                          PublicationSignIn(),
+                                    ));
+                              },
+                              child: Card(
+                                elevation: 8,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  height: 38,
+                                  width: 106,
+                                  decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          offset: Offset(2, 2),
+                                          blurRadius: 3,
+                                          color: Colors.grey)
+                                    ],
+                                    color: HexColor("C0A0A0"),
+                                  ),
+                                  child: const Text(
+                                    "Publications",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600,

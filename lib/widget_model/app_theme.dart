@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 // Our light/Primary Theme
 ThemeData themeData(BuildContext context) {
   return ThemeData(
@@ -24,7 +23,7 @@ ThemeData themeData(BuildContext context) {
       bodyLarge: const TextStyle(color: kBodyTextColorLight),
       bodyMedium: const TextStyle(color: kBodyTextColorLight),
       headlineMedium:
-      const TextStyle(color: kTitleTextLightColor, fontSize: 32),
+          const TextStyle(color: kTitleTextLightColor, fontSize: 32),
       displayLarge: const TextStyle(color: kTitleTextLightColor, fontSize: 80),
     ),
   );
@@ -57,7 +56,7 @@ ThemeData darkThemeData(BuildContext context) {
 }
 
 AppBarTheme appBarTheme =
-const AppBarTheme(color: Colors.transparent, elevation: 0);
+    const AppBarTheme(color: Colors.transparent, elevation: 0);
 
 // Colors
 const kPrimaryColor = Color(0xFFFF97B3);

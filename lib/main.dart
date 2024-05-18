@@ -1,10 +1,12 @@
 import 'package:bookverse/Controller/Providers/provider.dart';
+import 'package:bookverse/Controller/library_controller.dart';
+import 'package:bookverse/Controller/publication_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'Controller/user_bakend_servieces.dart';
+import 'Controller/user_controller.dart';
 import 'Views/admin/adminHomepage.dart';
 import 'Views/continue_as.dart';
 import 'Views/users/welcome.dart';
@@ -27,7 +29,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserProviders()),
-        ChangeNotifierProvider(create: (context) => AuthenticationProvider()),
+        ChangeNotifierProvider(create: (context) => UserAuthenticationProvider()),
+        ChangeNotifierProvider(create: (context) => LibraryAuthenticationProvider()),
+        ChangeNotifierProvider(create: (context) => PublicationAuthenticationProvider()),
       ],
       child: MaterialApp(
 
