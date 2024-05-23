@@ -1,5 +1,5 @@
 import 'package:bookverse/Views/admin/publictionsrequests.dart';
-import 'package:bookverse/Views/admin/userslist.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,7 +31,8 @@ class Publications extends StatelessWidget {
                       left: 0,
                       right: 0,
                       child: FractionallySizedBox(
-                        widthFactor: 0.6, // Adjust this factor to control the width of the text relative to the screen width
+                        widthFactor:
+                            0.6, // Adjust this factor to control the width of the text relative to the screen width
                         alignment: Alignment.center,
                         child: Text(
                           "Publications",
@@ -39,8 +40,11 @@ class Publications extends StatelessWidget {
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontFamily: GoogleFonts.lora().fontFamily,
-                            shadows: const [Shadow(color: Colors.black, offset: Offset(2, 2))],
-                            fontSize: MediaQuery.of(context).size.width * 0.06, // Adjust this factor to control the font size relative to the screen width
+                            shadows: const [
+                              Shadow(color: Colors.black, offset: Offset(2, 2))
+                            ],
+                            fontSize: MediaQuery.of(context).size.width *
+                                0.06, // Adjust this factor to control the font size relative to the screen width
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -64,7 +68,7 @@ class Publications extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PublictionsRequests(),
+                              builder: (context) => PublictionRequests(),
                             ));
                       },
                     ),
@@ -75,7 +79,10 @@ class Publications extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => OurPublictions()));
+                                builder: (context) => OurPublictions(
+                                      userId: FirebaseAuth
+                                          .instance.currentUser!.uid,
+                                    )));
                       },
                     ),
                   ],
@@ -110,7 +117,9 @@ class Publications extends StatelessWidget {
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontFamily: GoogleFonts.lora().fontFamily,
-                shadows: const [Shadow(color: Colors.black, offset: Offset(2, 2))],
+                shadows: const [
+                  Shadow(color: Colors.black, offset: Offset(2, 2))
+                ],
                 fontSize: 16,
               ),
             ),

@@ -24,9 +24,20 @@ class UserProviders extends ChangeNotifier {
   }
 
 
-  String selectedCategory = "Category";
+  String selectedCategory = "Novel";
   void dropDown(value) {
     selectedCategory = value.toString();
+    notifyListeners();
+  }
+
+  String selectedPubCategory = "Novel";
+  void dropDownBtn(value) {
+    selectedPubCategory = value.toString();
+    notifyListeners();
+  }
+  String userSelectedCategory = "Novel";
+  void dropDownUser(value) {
+    userSelectedCategory = value.toString();
     notifyListeners();
   }
   bool isExpanded = false;

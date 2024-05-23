@@ -1,6 +1,7 @@
 import 'package:bookverse/Controller/library_controller.dart';
 import 'package:bookverse/Controller/user_controller.dart';
 import 'package:bookverse/Views/library/library_signup.dart';
+import 'package:bookverse/Views/publications/publication_signup.dart';
 import 'package:bookverse/Views/users/forgotpassword.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -142,7 +143,9 @@ class PublicationSignIn extends StatelessWidget {
                                   const Text("i dont have an account"),
                                   const SizedBox(width: 4,),
                                   InkWell(onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => LibrarySignUp(),));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => PublicationSignUp()
+
+                                      ,));
                                   },child: const Text("Sign Up",style: TextStyle(fontWeight: FontWeight.bold),)),
                                 ],
                               )

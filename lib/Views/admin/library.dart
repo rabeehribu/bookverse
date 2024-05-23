@@ -1,5 +1,4 @@
-import 'package:bookverse/Views/admin/userslist.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -8,7 +7,8 @@ import 'REQUESTS.dart';
 import 'ourlibrarys.dart';
 
 class AdminLibrarys extends StatelessWidget {
-  const AdminLibrarys({Key? key});
+
+  const AdminLibrarys({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class AdminLibrarys extends StatelessWidget {
                       left: 0,
                       right: 0,
                       child: FractionallySizedBox(
-                        widthFactor: 0.7, // Adjust this factor to control the width of the text relative to the screen width
+                        widthFactor: 0.7,
                         alignment: Alignment.center,
                         child: Text(
                           "Library",
@@ -37,8 +37,10 @@ class AdminLibrarys extends StatelessWidget {
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontFamily: GoogleFonts.lora().fontFamily,
-                            shadows: const [Shadow(color: Colors.black, offset: Offset(2, 2))],
-                            fontSize: MediaQuery.of(context).size.width * 0.06, // Adjust this factor to control the font size relative to the screen width
+                            shadows: const [
+                              Shadow(color: Colors.black, offset: Offset(2, 2))
+                            ],
+                            fontSize: MediaQuery.of(context).size.width * 0.06,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -59,15 +61,26 @@ class AdminLibrarys extends StatelessWidget {
                       context,
                       "REQUESTS",
                       onPressed: () {
-Navigator.push(context, MaterialPageRoute(builder: (context) => RequestsLibrary(),));                      },
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RequestsLibrary(),
+                          ),
+                        );
+                      },
                     ),
                     buildMenuItem(
                       context,
                       "OUR LIBRARIES",
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  OurLibrary()     ));                    },
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OurLibrary(userId: FirebaseAuth.instance.currentUser!.uid),
+                          ),
+                        );
+                      },
                     ),
-
                   ],
                 ),
               ),
@@ -78,8 +91,7 @@ Navigator.push(context, MaterialPageRoute(builder: (context) => RequestsLibrary(
     );
   }
 
-  Widget buildMenuItem(BuildContext context, String text,
-      {VoidCallback? onPressed}) {
+  Widget buildMenuItem(BuildContext context, String text, {VoidCallback? onPressed}) {
     return Padding(
       padding: const EdgeInsets.all(2.0),
       child: InkWell(
@@ -100,7 +112,9 @@ Navigator.push(context, MaterialPageRoute(builder: (context) => RequestsLibrary(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontFamily: GoogleFonts.lora().fontFamily,
-                shadows: const [Shadow(color: Colors.black, offset: Offset(2, 2))],
+                shadows: const [
+                  Shadow(color: Colors.black, offset: Offset(2, 2))
+                ],
                 fontSize: 16,
               ),
             ),

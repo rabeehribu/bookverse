@@ -1,23 +1,15 @@
-import 'package:bookverse/Views/admin/userDetails.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
-
+import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
+import '../../Controller/library_controller.dart';
 import 'lib accept or reject.dart';
 
 class RequestsLibrary extends StatelessWidget {
-  RequestsLibrary({super.key});
+  RequestsLibrary({Key? key}) : super(key: key);
 
-  @override
-  List<Map<String, dynamic>> librarys = [
-    {'name': 'FIORA BOOKS', 'Location': 'Calicut'},
-    {'name': 'FIORA BOOKS', 'Location': 'Palakkad'},
-    {'name': 'FIORA BOOKS', 'Location': 'Malappuram'},
-    {'name': 'FIORA BOOKS', 'Location': 'Kollam'},
-    {'name': 'FIORA BOOKS', 'Location': 'Kozikod'},
-    {'name': 'FIORA BOOKS', 'Location': 'Kochi'},
-    {'name': 'FIORA BOOKS', 'Location': 'Kannur'},
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +24,7 @@ class RequestsLibrary extends StatelessWidget {
             left: 0,
             right: 0,
             child: FractionallySizedBox(
-              widthFactor: 0.7, // Adjust this factor to control the width of the text relative to the screen width
+              widthFactor: 0.7,
               alignment: Alignment.center,
               child: Text(
                 "Library",
@@ -40,8 +32,10 @@ class RequestsLibrary extends StatelessWidget {
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontFamily: GoogleFonts.lora().fontFamily,
-                  shadows: const [Shadow(color: Colors.black, offset: Offset(2, 2))],
-                  fontSize: MediaQuery.of(context).size.width * 0.06, // Adjust this factor to control the font size relative to the screen width
+                  shadows: const [
+                    Shadow(color: Colors.black, offset: Offset(2, 2))
+                  ],
+                  fontSize: MediaQuery.of(context).size.width * 0.06,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -51,56 +45,125 @@ class RequestsLibrary extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.only(top: 180),
-            child: ListView.builder(
-              itemCount: librarys.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10),
-                    child: Card(
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0)),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('library')
+                  // .where('status', isEqualTo: 'rejected')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return buildShimmerListView();
+                }
+
+                if (snapshot.hasError) {
+                  print('Error fetching data: ${snapshot.error}');
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  print('No data found');
+                  return Center(child: Text('No library requests found.'));
+                }
+
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final libraryData = snapshot.data!.docs[index];
+
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                          left: 10.0, right: 10, bottom: 10),
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => LibraryAcceptorNot(name: librarys[index]['name'], phone: librarys[index]['phone'],),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LibraryAcceptorNot(
+                                        name: libraryData['libraryName'],
+                                        location: libraryData['location'],
+                                        phone: libraryData[
+                                            'phoneNum'], // Corrected field name
+                                        email: libraryData[
+                                            'email'], // Corrected field name
+                                        image: libraryData['libraryImg'],
+                                        libraryId: libraryData.id,
+                                      )));
                         },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: HexColor("F8AFAF").withOpacity(0.12),
-                            borderRadius: BorderRadius.circular(0),
+                        child: Card(
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
                           ),
-                          padding: const EdgeInsets.all(10),
-                          width: 290,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  const Text("   Name      : ",
-                                      style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                                  Text(librarys[index]['name']),
-                                ],
+                          child: ListTile(
+                            leading: Card(
+                              elevation: 3,
+                              child: Container(
+                                height: 100,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(6),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image:
+                                        NetworkImage(libraryData['libraryImg']),
+                                  ),
+                                ),
                               ),
-                              const SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  const Text("   Phone     : ",
-                                      style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                                  Text(librarys[index]['Location']),
-                                ],
-                              ),
-                            ],
+                            ),
+                            title: Text(libraryData['libraryName']),
+                            subtitle: Text(libraryData['location']),
                           ),
                         ),
                       ),
-                    ));
+                    );
+                  },
+                );
               },
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildShimmerListView() {
+    return ListView.builder(
+      itemCount: 6,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 10),
+          child: Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Card(
+              elevation: 3,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: ListTile(
+                leading: Card(
+                  elevation: 3,
+                  child: Container(
+                    height: 100,
+                    width: 80,
+                    color: Colors.white,
+                  ),
+                ),
+                title: Container(
+                  height: 10,
+                  width: 80,
+                  color: Colors.white,
+                ),
+                subtitle: Container(
+                  height: 10,
+                  width: 60,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

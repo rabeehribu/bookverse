@@ -15,11 +15,10 @@ class LibrarySignUp extends StatelessWidget {
   TextEditingController mailIDController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController libraryNameCntrl = TextEditingController();
+  TextEditingController phoneNumCntrl = TextEditingController();
   TextEditingController locationController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final libraryAuthProvider = Provider.of<LibraryAuthenticationProvider>(context, listen: false);
-
     return Scaffold(
       body: Stack(
         children: [
@@ -27,154 +26,165 @@ class LibrarySignUp extends StatelessWidget {
             size: Size(MediaQuery.of(context).size.width, 200),
             painter: HeaderCurvedContainer(),
           ),
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.only(top: 170),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 55),
-                    child: Container(
-                      height: 380,
-                      width: 370,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(10),
-                        color: HexColor('F8AFAF').withOpacity(0.12),
-                      ),
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            children: [
-                              Text(
-                                "SIGN UP",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: GoogleFonts.lora().fontFamily,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(
-                                height:
-                                MediaQuery.of(context).size.height * 0.02,
-                              ),
-                              Card(
-                                  elevation: 4,
-                                  child: TextField(controller: mailIDController,
-                                    decoration: const InputDecoration(
-                                        hintText: "Email",
-                                        hintStyle: TextStyle(
-                                            color: Colors.grey, fontSize: 14),
-                                        filled: true,
-                                        isDense: true,
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none)),
-                                  )),
-                              Card(
-                                  elevation: 4,
-                                  child: TextField(controller: passwordController,
-                                    decoration: const InputDecoration(
-                                        hintText: "Password",
-                                        hintStyle: TextStyle(
-                                            color: Colors.grey, fontSize: 14),
-                                        filled: true,
-                                        isDense: true,
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none)),
-                                  )),
-
-                              Card(
-                                  elevation: 4,
-                                  child: TextField(controller: libraryNameCntrl,
-                                    decoration: const InputDecoration(
-                                        hintText: "Library Name",
-                                        hintStyle: TextStyle(
-                                            color: Colors.grey, fontSize: 14),
-                                        filled: true,
-                                        isDense: true,
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none)),
-                                  )),
-                              Card(
-                                  elevation: 4,
-                                  child: TextField(controller: locationController,
-                                    decoration: const InputDecoration(
-                                        hintText: "Location",
-                                        hintStyle: TextStyle(
-                                            color: Colors.grey, fontSize: 14),
-                                        filled: true,
-                                        isDense: true,
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none)),
-                                  )),
-
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Library_Home(),));
-                                  libraryAuthProvider.signUp(mailIDController.text,libraryNameCntrl.text,locationController.text, passwordController.text,context);
-                                  },
-                                child: Card(
-                                  elevation: 8,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    height: 38,
-                                    width: 106,
-                                    decoration: BoxDecoration(
-                                      boxShadow: const [
-                                        BoxShadow(
-                                            offset: Offset(2, 2),
-                                            blurRadius: 3,
-                                            color: Colors.grey)
-                                      ],
-                                      color: HexColor("C0A0A0"),
+          Consumer<LibraryAuthenticationProvider>(
+            builder: (context, libraryAuthProvider, _) {
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.only(top: 170),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 55),
+                        child: Container(
+                          height: 380,
+                          width: 370,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(10),
+                            color: HexColor('F8AFAF').withOpacity(0.12),
+                          ),
+                          child: SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "SIGN UP",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: GoogleFonts.lora().fontFamily,
                                     ),
-                                    child: const Text(
-                                      "SIGN UP",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height * 0.02,
+                                  ),
+                                  Card(
+                                    elevation: 4,
+                                    child: TextField(
+                                      controller: mailIDController,
+                                      decoration: const InputDecoration(
+                                          hintText: "Email",
+                                          hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                          filled: true,
+                                          isDense: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(borderSide: BorderSide.none)),
+                                    ),
+                                  ),
+                                  Card(
+                                    elevation: 4,
+                                    child: TextField(
+                                      controller: passwordController,
+                                      decoration: const InputDecoration(
+                                          hintText: "Password",
+                                          hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                          filled: true,
+                                          isDense: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(borderSide: BorderSide.none)),
+                                    ),
+                                  ),
+
+                                  Card(
+                                    elevation: 4,
+                                    child: TextField(
+                                      controller: libraryNameCntrl,
+                                      decoration: const InputDecoration(
+                                          hintText: "Library Name",
+                                          hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                          filled: true,
+                                          isDense: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(borderSide: BorderSide.none)),
+                                    ),
+                                  ),
+                                  Card(
+                                    elevation: 4,
+                                    child: TextField(
+                                      controller: phoneNumCntrl,
+                                      decoration: const InputDecoration(
+                                          hintText: "phone Number",
+                                          hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                          filled: true,
+                                          isDense: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(borderSide: BorderSide.none)),
+                                    ),
+                                  ),
+                                  Card(
+                                    elevation: 4,
+                                    child: TextField(
+                                      controller: locationController,
+                                      decoration: const InputDecoration(
+                                          hintText: "Location",
+                                          hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                          filled: true,
+                                          isDense: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(borderSide: BorderSide.none)),
+                                    ),
+                                  ),
+
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Library_Home(),));
+                                      libraryAuthProvider.signUp(mailIDController.text, libraryNameCntrl.text,phoneNumCntrl.text, locationController.text, passwordController.text, context);
+                                    },
+                                    child: Card(
+                                      elevation: 8,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        height: 38,
+                                        width: 106,
+                                        decoration: BoxDecoration(
+                                          boxShadow: const [
+                                            BoxShadow(
+                                                offset: Offset(2, 2), blurRadius: 3, color: Colors.grey)
+                                          ],
+                                          color: HexColor("C0A0A0"),
+                                        ),
+                                        child: const Text(
+                                          "SIGN UP",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              Row(mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("i have an account"),
-                                  SizedBox(width: 4,),
-                                  InkWell(onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => LibrarySignIn(),));
-                                  },child: Text("Sign In",style: TextStyle(fontWeight: FontWeight.bold),)),
+                                  Row(mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("i have an account"),
+                                      SizedBox(width: 4,),
+                                      InkWell(onTap: () {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => LibrarySignIn(),));
+                                      },child: Text("Sign In",style: TextStyle(fontWeight: FontWeight.bold),)),
+                                    ],
+                                  )
                                 ],
-                              )
-                            ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           ),
         ],
       ),

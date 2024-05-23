@@ -1,5 +1,6 @@
 import 'package:bookverse/Views/users/public_book_details.dart';
 import 'package:bookverse/Views/users/publiction_detail_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -59,7 +60,8 @@ class UsersPublications extends StatelessWidget {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
                             child: Card(
                               elevation: 4,
                               child: TextField(
@@ -85,50 +87,85 @@ class UsersPublications extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                          GridView.builder(
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                            ),
-                            shrinkWrap: true,
-                            physics: BouncingScrollPhysics(),
-                            itemCount: _data.length,
-                            itemBuilder: (context, index) {
-                              final item = _data[index];
-                              return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => PublictionDetail(
-                                        img: item['image'], title: item['title'],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Column(
-                                  children: [
-                                    Card(
-                                      child: Container(
-                                        height: MediaQuery.of(context).size.width * 0.4,
-                                        width: MediaQuery.of(context).size.width * 0.4,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(14),
-                                          image: DecorationImage(
-                                            fit: BoxFit.fitHeight,
-                                            image: AssetImage(item['image']),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.02),
+                          StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('publications')
+                                  .where('status', isEqualTo: 'accepted')
+                                  .snapshots(),
+                              builder: (context, AsyncSnapshot snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                                return GridView.builder(
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
+                                  ),
+                                  shrinkWrap: true,
+                                  physics: BouncingScrollPhysics(),
+                                  itemCount: snapshot.data.docs.length,
+                                  itemBuilder: (context, index) {
+                                    final item = _data[index];
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                PublictionDetail(
+                                              img: snapshot.data.docs[index]
+                                                  ['publicationImg'],
+                                              title: snapshot.data.docs[index]
+                                                  ['publicationName'],
+                                                  location: snapshot.data.docs[index]['location'],
+                                                  docId: snapshot.data.docs[index]['publicationId'],
+                                            ),
                                           ),
-                                        ),
+                                        );
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Card(
+                                            child: Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.4,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(14),
+                                                image: DecorationImage(
+                                                  fit: BoxFit.fitHeight,
+                                                  image: NetworkImage(
+                                                      snapshot.data.docs[index]
+                                                          ['publicationImg']),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            snapshot.data.docs[index]
+                                                ['publicationName'],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
                                       ),
-                                    ),
-                                    Text(item['title'])
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                                    );
+                                  },
+                                );
+                              }),
                         ],
                       ),
                     ),

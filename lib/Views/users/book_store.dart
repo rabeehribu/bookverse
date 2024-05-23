@@ -128,7 +128,7 @@ class Bookstore extends StatelessWidget {
                                                 BorderRadius.circular(8),
                                           ),
                                           child: Text(
-                                            "Recommended",
+                                            "Buy now",
                                             style: TextStyle(
                                               color: provider.storeselectedIndex == 0
                                                   ? Colors.white
@@ -157,7 +157,7 @@ class Bookstore extends StatelessWidget {
                                                 BorderRadius.circular(8),
                                           ),
                                           child: Text(
-                                            "All Books",
+                                            "Sell now",
                                             style: TextStyle(
                                               color: provider.storeselectedIndex == 1
                                                   ? Colors.white
@@ -242,7 +242,7 @@ class Bookstore extends StatelessWidget {
                                               Padding(
                                                 padding: const EdgeInsets.only(top: 5.0,bottom: 5),
                                                 child: Text(
-                                                  "CREATE ACCOUNT",
+                                                  "BOOK DETAILS",
                                                   style: TextStyle(
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
@@ -266,10 +266,10 @@ class Bookstore extends StatelessWidget {
                                                     }, icon: Icon(Icons.image,size: 50,))
                                                   )),
 
-                                              Card(
+                                              const Card(
                                                 child: TextField(
                                                   // controller: fullNameController,
-                                                  decoration: const InputDecoration(
+                                                  decoration: InputDecoration(
                                                       hintText: "Book Name",
                                                       filled: true,
                                                       isDense: true,
@@ -280,10 +280,10 @@ class Bookstore extends StatelessWidget {
                                                           borderSide: BorderSide.none)),
                                                 ),
                                               ),
-                                              Card(
+                                              const Card(
                                                 child: TextField(
                                                   // controller: ageController,
-                                                  decoration: const InputDecoration(
+                                                  decoration: InputDecoration(
                                                       hintText: "Author Name",
                                                       filled: true,
                                                       isDense: true,
@@ -294,10 +294,10 @@ class Bookstore extends StatelessWidget {
                                                           borderSide: BorderSide.none)),
                                                 ),
                                               ),
-                                              Card(
+                                              const Card(
                                                 child: TextField(
                                                   // controller: genderController,
-                                                  decoration: const InputDecoration(
+                                                  decoration: InputDecoration(
                                                       hintText: "Add price",
                                                       filled: true,
                                                       isDense: true,
@@ -308,10 +308,10 @@ class Bookstore extends StatelessWidget {
                                                           borderSide: BorderSide.none)),
                                                 ),
                                               ),
-                                              Card(
+                                              const Card(
                                                 child: TextField(
                                                   // controller: phoneNumberController,
-                                                  decoration: const InputDecoration(
+                                                  decoration: InputDecoration(
                                                       hintText: "Publisher",
                                                       filled: true,
                                                       isDense: true,
@@ -322,10 +322,10 @@ class Bookstore extends StatelessWidget {
                                                           borderSide: BorderSide.none)),
                                                 ),
                                               ),
-                                              Card(
+                                              const Card(
                                                 child: TextField(
                                                   // controller: mailIDController,
-                                                  decoration: const InputDecoration(
+                                                  decoration: InputDecoration(
                                                       hintText: "Description",
                                                       filled: true,
                                                       isDense: true,
@@ -367,22 +367,30 @@ class Bookstore extends StatelessWidget {
                                                                 fontWeight: FontWeight.bold,
                                                                 fontSize: 19),
                                                           ),
-                                                          actions: const [
-                                                            Text(
-                                                              "Cancel",
-                                                              style: TextStyle(fontWeight: FontWeight.bold),
+                                                          actions:  [
+                                                            InkWell(onTap: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                              child: Text(
+                                                                "Cancel",
+                                                                style: TextStyle(fontWeight: FontWeight.bold),
+                                                              ),
                                                             ),
-                                                            Text(
-                                                              "CONFIRM",
-                                                              style: TextStyle(
-                                                                  fontSize: 17,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  color: Colors.white,
-                                                                  shadows: [
-                                                                    Shadow(
-                                                                        offset: Offset(3, 3),
-                                                                        color: Colors.black)
-                                                                  ]),
+                                                            InkWell(onTap: () {
+
+                                                            },
+                                                              child: Text(
+                                                                "CONFIRM",
+                                                                style: TextStyle(
+                                                                    fontSize: 17,
+                                                                    fontWeight: FontWeight.bold,
+                                                                    color: Colors.white,
+                                                                    shadows: [
+                                                                      Shadow(
+                                                                          offset: Offset(3, 3),
+                                                                          color: Colors.black)
+                                                                    ]),
+                                                              ),
                                                             )
                                                           ],
                                                         );

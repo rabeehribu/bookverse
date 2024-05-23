@@ -23,26 +23,28 @@ class LibraryAuthenticationProvider with ChangeNotifier {
 
   LibraryModel get libraryModel => _libraryModel!;
 
-  Future<void> saveUser(String libraryId, String email, String libraryName,
+  Future<void> saveUser(String libraryId, String email, String libraryName,String phoneNum,
       String location) async {
     final userDoc = firebaseFirestore.collection("library").doc(libraryId);
     _libraryModel = LibraryModel(
       libraryId: libraryId,
       email: email,
       libraryName: libraryName,
+
+      phoneNum: phoneNum,
       location: location,
     );
     await userDoc.set(_libraryModel!.toMap());
   }
 
-  Future<void> signUp(String email, String libraryName, String location,
+  Future<void> signUp(String email, String libraryName,String phoneNum, String location,
       String password, BuildContext context) async {
     try {
       UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       final user = firebaseAuth.currentUser;
       user!.sendEmailVerification();
-      await saveUser(user.uid, email, libraryName, location);
+      await saveUser(user.uid, email, libraryName,phoneNum, location);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Sign-up successful. Please verify your email.")));
     } catch (e) {
@@ -78,6 +80,45 @@ class LibraryAuthenticationProvider with ChangeNotifier {
   Future<void> signOut() async {
     await firebaseAuth.signOut();
     notifyListeners();
+  }
+  Future<void> acceptLibraryRequest(String userId, BuildContext context) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('library')
+          .doc(userId)
+          .update({'status': 'accepted'});
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Library request accepted.')),
+      );
+
+      // Trigger state update to remove the accepted request from the list
+      notifyListeners();
+    } catch (e) {
+      print('Error accepting library request: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error accepting library request: $e')),
+      );
+    }
+  }
+
+  Future<void> rejectLibraryRequest(String userId, BuildContext context) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('library')
+          .doc(userId)
+          .update({'status': 'rejected'});
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Library request rejected.')),
+      );
+
+      // Trigger state update to remove the rejected request from the list
+      notifyListeners();
+    } catch (e) {
+      print('Error rejecting library request: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error rejecting library request: $e')),
+      );
+    }
   }
 
   Future<String> uploadImage(File image) async {
@@ -138,6 +179,8 @@ class LibraryAuthenticationProvider with ChangeNotifier {
         bookRate: bookRate,
         aboutBooks: aboutBooks,
       );
+
+
 
       await firebaseFirestore
           .collection('library')

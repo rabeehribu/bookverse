@@ -1,4 +1,3 @@
-import 'package:bookverse/Views/admin/userslist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -56,17 +55,7 @@ class AdminHome extends StatelessWidget {
                 width: 290,
                 child: Column(
                   children: [
-                    buildMenuItem(
-                      context,
-                      "USERS LIST",
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UsersList(),
-                            ));
-                      },
-                    ),
+
                     buildMenuItem(
                       context,
                       "LIBRARY",

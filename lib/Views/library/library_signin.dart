@@ -15,8 +15,6 @@ class LibrarySignIn extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final libraryAuthProvider = Provider.of<LibraryAuthenticationProvider>(context, listen: false);
-
     return Scaffold(
       body: Stack(
         children: [
@@ -24,136 +22,143 @@ class LibrarySignIn extends StatelessWidget {
             size: Size(MediaQuery.of(context).size.width, 200),
             painter: HeaderCurvedContainer(),
           ),
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.only(top: 170),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 55),
-                    child: Container(
-                      height: 290,
-                      width: 370,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(10),
-                        color: HexColor('F8AFAF').withOpacity(0.12),
-                      ),
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            children: [
-                              Text(
-                                "SIGN IN",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: GoogleFonts.lora().fontFamily,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(
-                                height:
-                                MediaQuery.of(context).size.height * 0.02,
-                              ),
-                              Card(
-                                  elevation: 4,
-                                  child: TextField(controller: mailIDController,
-                                    decoration: const InputDecoration(
-                                        hintText: "email",
-                                        hintStyle: TextStyle(
-                                            color: Colors.grey, fontSize: 14),
-                                        filled: true,
-                                        isDense: true,
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none)),
-                                  )),
-                              Card(
-                                  elevation: 4,
-                                  child: TextField(controller: passwordController,
-                                    decoration: const InputDecoration(
-                                        hintText: "Password",
-                                        hintStyle: TextStyle(
-                                            color: Colors.grey, fontSize: 14),
-                                        filled: true,
-                                        isDense: true,
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none)),
-                                  )),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: Align(alignment: Alignment.centerRight,
-                                  child: InkWell(onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPassword(),));
-                                  },
-                                    child: Text("Forgot password?", style: TextStyle(
+          Consumer<LibraryAuthenticationProvider>(
+            builder: (context, libraryAuthProvider, _) {
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.only(top: 170),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 55),
+                        child: Container(
+                          height: 290,
+                          width: 370,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(10),
+                            color: HexColor('F8AFAF').withOpacity(0.12),
+                          ),
+                          child: SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "SIGN IN",
+                                    style: TextStyle(
                                       color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: GoogleFonts.lora().fontFamily,fontSize: 14,
-                                    ),),
-                                  ),
-                                ),
-                              ),
-
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              InkWell(
-                                onTap: () {libraryAuthProvider.signIn(mailIDController.text, passwordController.text, context);},
-                                child: Card(
-                                  elevation: 8,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    height: 38,
-                                    width: 106,
-                                    decoration: BoxDecoration(
-                                      boxShadow: const [
-                                        BoxShadow(
-                                            offset: Offset(2, 2),
-                                            blurRadius: 3,
-                                            color: Colors.grey)
-                                      ],
-                                      color: HexColor("C0A0A0"),
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: GoogleFonts.lora().fontFamily,
                                     ),
-                                    child: const Text(
-                                      "SIGN UP",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height * 0.02,
+                                  ),
+                                  Card(
+                                    elevation: 4,
+                                    child: TextField(
+                                      controller: mailIDController,
+                                      decoration: const InputDecoration(
+                                          hintText: "email",
+                                          hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                          filled: true,
+                                          isDense: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(borderSide: BorderSide.none)),
+                                    ),
+                                  ),
+                                  Card(
+                                    elevation: 4,
+                                    child: TextField(
+                                      controller: passwordController,
+                                      decoration: const InputDecoration(
+                                          hintText: "Password",
+                                          hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                          filled: true,
+                                          isDense: true,
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(borderSide: BorderSide.none)),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPassword(),));
+                                        },
+                                        child: Text(
+                                          "Forgot password?",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: GoogleFonts.lora().fontFamily,
+                                            fontSize: 14,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              SizedBox(height: 12,),
-                              Row(mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("i dont have an account"),
-                                  SizedBox(width: 4,),
-                                  InkWell(onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => LibrarySignUp(),));
-                                  },child: Text("Sign Up",style: TextStyle(fontWeight: FontWeight.bold),)),
+
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      libraryAuthProvider.signIn(mailIDController.text, passwordController.text, context);
+                                    },
+                                    child: Card(
+                                      elevation: 8,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        height: 38,
+                                        width: 106,
+                                        decoration: BoxDecoration(
+                                          boxShadow: const [
+                                            BoxShadow(
+                                                offset: Offset(2, 2), blurRadius: 3, color: Colors.grey)
+                                          ],
+                                          color: HexColor("C0A0A0"),
+                                        ),
+                                        child: const Text(
+                                          "SIGN UP",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 12,),
+                                  Row(mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("i dont have an account"),
+                                      SizedBox(width: 4,),
+                                      InkWell(onTap: () {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => LibrarySignUp(),));
+                                      },child: Text("Sign Up",style: TextStyle(fontWeight: FontWeight.bold),)),
+                                    ],
+                                  )
                                 ],
-                              )
-                            ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
 
-                ],
-              ),
-            ),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),

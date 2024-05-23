@@ -1,25 +1,21 @@
-import 'package:bookverse/Controller/library_controller.dart';
-import 'package:bookverse/Controller/publication_controller.dart';
-import 'package:bookverse/Views/library/library_home.dart';
-import 'package:bookverse/Views/library/library_signin.dart';
-import 'package:bookverse/Views/publications/publication_signin.dart';
-import 'package:bookverse/Views/publications/publiction_home.dart';
+import 'package:bookverse/Controller/user_controller.dart';
+import 'package:bookverse/Views/users/forgotpassword.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
-class PublicationSignUp extends StatelessWidget {
-  PublicationSignUp({super.key});
+import '../../Controller/admin_controller.dart';
+
+class AdminSignIn extends StatelessWidget {
+  AdminSignIn({Key? key}) : super(key: key);
   TextEditingController mailIDController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController publicationCntrl = TextEditingController();
-  TextEditingController phoneNumCntrl = TextEditingController();
-  TextEditingController locationController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final publicationAuthProvider =
-        Provider.of<PublicationAuthenticationProvider>(context, listen: false);
+    final authProvider = Provider.of<AdminController>(context, listen: false);
 
     return Scaffold(
       body: Stack(
@@ -36,10 +32,9 @@ class PublicationSignUp extends StatelessWidget {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 55),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 55),
                     child: Container(
-                      height: 380,
+                      height: 290,
                       width: 370,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black),
@@ -52,7 +47,7 @@ class PublicationSignUp extends StatelessWidget {
                           child: Column(
                             children: [
                               Text(
-                                "SIGN UP",
+                                "SIGN IN",
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
@@ -62,14 +57,13 @@ class PublicationSignUp extends StatelessWidget {
                               ),
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.02,
+                                MediaQuery.of(context).size.height * 0.02,
                               ),
                               Card(
                                   elevation: 4,
-                                  child: TextField(
-                                    controller: mailIDController,
+                                  child: TextField(controller: mailIDController,
                                     decoration: const InputDecoration(
-                                        hintText: "Email",
+                                        hintText: "email",
                                         hintStyle: TextStyle(
                                             color: Colors.grey, fontSize: 14),
                                         filled: true,
@@ -82,8 +76,7 @@ class PublicationSignUp extends StatelessWidget {
                                   )),
                               Card(
                                   elevation: 4,
-                                  child: TextField(
-                                    controller: passwordController,
+                                  child: TextField(controller: passwordController,
                                     decoration: const InputDecoration(
                                         hintText: "Password",
                                         hintStyle: TextStyle(
@@ -96,72 +89,26 @@ class PublicationSignUp extends StatelessWidget {
                                         focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide.none)),
                                   )),
-                              Card(
-                                  elevation: 4,
-                                  child: TextField(
-                                    controller: publicationCntrl,
-                                    decoration: const InputDecoration(
-                                        hintText: "publication Name",
-                                        hintStyle: TextStyle(
-                                            color: Colors.grey, fontSize: 14),
-                                        filled: true,
-                                        isDense: true,
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none)),
-                                  )),
-                              Card(
-                                elevation: 4,
-                                child: TextField(
-                                  controller: phoneNumCntrl,
-                                  decoration: const InputDecoration(
-                                      hintText: "phone Number",
-                                      hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                                      filled: true,
-                                      isDense: true,
-                                      fillColor: Colors.white,
-                                      enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
-                                      focusedBorder: OutlineInputBorder(borderSide: BorderSide.none)),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Align(alignment: Alignment.centerRight,
+                                  child: InkWell(onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPassword(),));
+                                  },
+                                    child: Text("Forgot password?", style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: GoogleFonts.lora().fontFamily,fontSize: 14,
+                                    ),),
+                                  ),
                                 ),
                               ),
-                              Card(
-                                  elevation: 4,
-                                  child: TextField(
-                                    controller: locationController,
-                                    decoration: const InputDecoration(
-                                        hintText: "Location",
-                                        hintStyle: TextStyle(
-                                            color: Colors.grey, fontSize: 14),
-                                        filled: true,
-                                        isDense: true,
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide.none)),
-                                  )),
+
                               const SizedBox(
                                 height: 5,
                               ),
                               InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const Publications_Home(),
-                                      ));
-                                  publicationAuthProvider.signUp(
-                                      mailIDController.text,
-                                      publicationCntrl.text,
-                                      locationController.text,
-
-                                      phoneNumCntrl.text,
-
-                                      passwordController.text,
-                                      context);
-                                },
+                                onTap: () {authProvider.adminLogin(mailIDController.text, passwordController.text, context);},
                                 child: Card(
                                   elevation: 8,
                                   child: Container(
@@ -186,29 +133,6 @@ class PublicationSignUp extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text("i have an account"),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PublicationSignIn(),
-                                            ));
-                                      },
-                                      child: const Text(
-                                        "Sign In",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      )),
-                                ],
                               )
                             ],
                           ),

@@ -1,5 +1,7 @@
 import 'package:bookverse/Views/users/book_details.dart';
 import 'package:bookverse/Views/users/public_book_details.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,12 +9,15 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 import '../../Controller/Providers/provider.dart';
+import '../../widget_model/shimmer_effect.dart';
 
 class PublictionDetail extends StatelessWidget {
   final String img;
   final String title;
+  final String location;
+  final String docId;
 
-  const PublictionDetail({super.key, required this.img, required this.title});
+  const PublictionDetail({super.key, required this.img, required this.title,required this.location,required this.docId});
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +125,7 @@ class PublictionDetail extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
-                                          image: AssetImage(
+                                          image: NetworkImage(
                                             img,
                                           ),
                                           fit: BoxFit.fill,
@@ -153,7 +158,7 @@ class PublictionDetail extends StatelessWidget {
                                         color: Colors.black,
                                       ),
                                       Text(
-                                        "Thiruvananthapuram, Kerala, India",
+                                        location,
                                         style: TextStyle(
                                           fontSize: width * .03,
                                           shadows: const [
@@ -173,58 +178,77 @@ class PublictionDetail extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   const Text("Available Books:",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
+                                      style: TextStyle(fontWeight: FontWeight.bold)),
                                   DropdownButton(
                                     icon: const Icon(Icons.keyboard_arrow_down),
-                                    value: provider.selectedCategory,
+                                    value: provider.selectedPubCategory,
                                     items: const [
-                                      DropdownMenuItem(value: "Category", child: Text("Category")),
+                                      // DropdownMenuItem(value: "Category", child: Text("Category")),
                                       DropdownMenuItem(value: "Novel", child: Text("Novel")),
                                       DropdownMenuItem(value: "Short story", child: Text("Short story")),
                                       DropdownMenuItem(value: "Science-fiction", child: Text("Science-fiction")),
                                       DropdownMenuItem(value: "Adventure", child: Text("Adventure")),
                                     ],
                                     onChanged: (value) {
-                                      provider.dropDown(value);
+                                      provider.dropDownBtn(value);
                                     },
                                   ),
-
                                 ],
                               ),
                             ),
-                            SizedBox(
-                              height: 350,
-                              child: GridView.builder(
-                                padding: const EdgeInsets.all(5),
-                                gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  childAspectRatio: 0.7,
-                                ),
-                                itemCount: allBooks.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return InkWell(onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => PublictionBooksDetail(img:allBooks[index]['image']),));
-                                  },
-                                    child: Card(
-                                      elevation: 5,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: AssetImage(
-                                                allBooks[index]['image']),
-                                          ),
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(10),
+                            SizedBox(height: 355,
+                              child: StreamBuilder<QuerySnapshot>(
+                                stream: FirebaseFirestore.instance
+                                    .collection('publications')
+                                    .doc(docId)
+                                    .collection("books")
+                                    .where('category', isEqualTo: provider.selectedPubCategory)
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return buildShimmerGridView();
+                                  }
+                                  if (snapshot.hasData) {
+                                    if (snapshot.data!.docs.isNotEmpty) {
+                                      return GridView.builder(
+                                        padding: const EdgeInsets.all(5),
+                                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 3,
+                                          childAspectRatio: 0.7,
                                         ),
-                                      ),
-                                    ),
-                                  );
+                                        itemCount: snapshot.data!.docs.length,
+                                        itemBuilder: (BuildContext context, int index) {
+                                          return InkWell(
+                                            onTap: () {
+                                              // Handle book selection
+                                            },
+                                            child: Card(
+                                              elevation: 5,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    fit: BoxFit.fill,
+                                                    image: NetworkImage(snapshot.data!.docs[index]['imageURL']),
+                                                  ),
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      return Center(child: Text('No Books available in this category'));
+                                    }
+                                  } else if (snapshot.hasError) {
+                                    return Center(child: Text('Error: ${snapshot.error}'));
+                                  } else {
+                                    return Center(child: Text('No Data'));
+                                  }
                                 },
                               ),
                             ),

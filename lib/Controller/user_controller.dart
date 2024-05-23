@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../Model/user_model.dart';
+import '../Views/continue_as.dart';
 
 class UserAuthenticationProvider with ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -87,8 +88,8 @@ class UserAuthenticationProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signOut() async {
-    await _firebaseAuth.signOut();
+  Future<void> signOut(context) async {
+    await _firebaseAuth.signOut().then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => Continue_As(),)));
     notifyListeners();
   }
 

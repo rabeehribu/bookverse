@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:bookverse/Model/add_book_publications.dart';
+import 'package:bookverse/Model/publication_model.dart';
 import 'package:bookverse/Views/publications/publiction_home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,25 +20,28 @@ class PublicationAuthenticationProvider with ChangeNotifier {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
-  LibraryModel? _publicationModel;
+  PublicationModel? _publicationModel;
 
-  LibraryModel get publicationModel => _publicationModel!;
+  PublicationModel get publicationModel => _publicationModel!;
 
   Future<void> saveUser(String libraryId,
       String email,
       String libraryName,
-      String location,) async {
+      String location,
+      String phoneNum) async {
     final userDoc = firebaseFirestore.collection("publications").doc(libraryId);
-    _publicationModel = LibraryModel(
-        libraryId: libraryId,
+    _publicationModel = PublicationModel(
+        publicationId: libraryId,
         email: email,
-        libraryName: libraryName,
-        location: location);
+        publicationName: libraryName,
+        location: location,
+        phoneNum: phoneNum);
     await userDoc.set(_publicationModel!.toMap());
   }
 
   Future signUp(String email,
       String libraryName,
+  phoneNum,
       String location,
       String password,
       context,) async {
@@ -47,7 +51,7 @@ class PublicationAuthenticationProvider with ChangeNotifier {
           .createUserWithEmailAndPassword(email: email, password: password);
       final user = firebaseAuth.currentUser;
       user!.sendEmailVerification();
-      await saveUser(user.uid, email, libraryName, location);
+      await saveUser(user.uid, email, libraryName,phoneNum, location);
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Its Successfull")));
     } catch (e) {
@@ -89,12 +93,81 @@ class PublicationAuthenticationProvider with ChangeNotifier {
     await firebaseAuth.signOut();
     notifyListeners();
   }
+  Future<void> acceptLibraryRequest(String userId, BuildContext context) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('publications')
+          .doc(userId)
+          .update({'status': 'accepted'});
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Library request accepted.')),
+      );
+
+      // Trigger state update to remove the accepted request from the list
+      notifyListeners();
+    } catch (e) {
+      print('Error accepting library request: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error accepting library request: $e')),
+      );
+    }
+  }
+
+  Future<void> rejectLibraryRequest(String userId, BuildContext context) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('publications')
+          .doc(userId)
+          .update({'status': 'rejected'});
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Library request rejected.')),
+      );
+
+      // Trigger state update to remove the rejected request from the list
+      notifyListeners();
+    } catch (e) {
+      print('Error rejecting library request: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error rejecting library request: $e')),
+      );
+    }
+  }
+
+  Future<String> uploadImage(File image) async {
+    String fileName = DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString();
+    Reference reference = firebaseStorage.ref().child('images/$fileName');
+    UploadTask uploadTask = reference.putFile(image);
+    TaskSnapshot storageTaskSnapshot = await uploadTask;
+    return await storageTaskSnapshot.ref.getDownloadURL().then((value) => value);
+  }
+
+  Future<void> updateLibrary(String url, BuildContext context) async {
+    log(url);
+    try {
+      String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+      // String imageUrl = library.libraryImg ?? ''; // Get the image URL from the model
+      await firebaseFirestore.collection('publications').doc(userId).update(
+          {'publicationImg': url});
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("publications details updated successfully")));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text(
+          "Failed to update publications details. Please try again.")));
+    }
+  }
+
+
   //_______________________________AddBooks CONTROL______________________________________//
 
   TextEditingController bookNameController = TextEditingController();
   TextEditingController authorNameController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
   TextEditingController bookRateController = TextEditingController();
+
+
   TextEditingController aboutBooksController = TextEditingController();
 
   final addBooksKey = GlobalKey<FormState>();
@@ -122,7 +195,7 @@ class PublicationAuthenticationProvider with ChangeNotifier {
       );
 
       await firebaseFirestore
-          .collection('library')
+          .collection('publications')
           .doc(firebaseAuth.currentUser!.uid)
           .collection("books")
           .doc(bookName)
@@ -143,7 +216,7 @@ class PublicationAuthenticationProvider with ChangeNotifier {
       booksList.clear();
 
       CollectionReference booksRef = firebaseFirestore
-          .collection('library')
+          .collection('publications')
           .doc(firebaseAuth.currentUser!.uid)
           .collection("books");
       QuerySnapshot bookSnapshot = await booksRef.get();

@@ -1,30 +1,39 @@
 class PublicationModel {
-  String libraryId;
+  String publicationId;
   String email;
-  String libraryName;
+  String phoneNum;
+  String publicationName;
   String location;
+  String? publicationImg;
 
   PublicationModel({
-    required this.libraryId,
+    required this.publicationId,
     required this.email,
-    required this.libraryName,
+    required this.phoneNum,
+    required this.publicationName,
     required this.location,
+    this.publicationImg,
   });
+
   factory PublicationModel.fromMap(Map<String, dynamic> map) {
     return PublicationModel(
-      libraryId: map['userId'],
+      publicationId: map['publicationId'],
       email: map['email'],
-      libraryName: map['age'],
-      location: map['gender'],
+      phoneNum: map['phoneNum'],
+      publicationName: map['publicationName'],
+      location: map['location'],
+      publicationImg: map['publicationImg'],
     );
   }
+
   Map<String, dynamic> toMap() {
     return {
-      'userId': libraryId,
+      'publicationId': publicationId,
+      'phoneNum': phoneNum,
       'email': email,
-      'age': libraryName,
-      'gender': location,
+      'publicationName': publicationName,
+      'location': location,
+      'publicationImg': publicationImg,
     };
   }
 }
-

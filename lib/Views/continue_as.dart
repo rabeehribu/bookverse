@@ -1,4 +1,5 @@
 import 'package:bookverse/Views/admin/adminHomepage.dart';
+import 'package:bookverse/Views/admin/admin_login.dart';
 import 'package:bookverse/Views/library/library_signin.dart';
 import 'package:bookverse/Views/library/library_signup.dart';
 import 'package:bookverse/Views/publications/publication_signin.dart';
@@ -89,7 +90,7 @@ class Continue_As extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const AdminHome(),
+                                      builder: (context) =>  AdminSignIn(),
                                     ));
                               },
                               child: Card(

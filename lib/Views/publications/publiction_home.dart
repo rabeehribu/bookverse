@@ -71,7 +71,7 @@ class Publications_Home extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>  const PubViewBooks()));
+                                builder: (context) =>   PubViewBooks()));
                       },
                     ),
 
@@ -103,7 +103,7 @@ class Publications_Home extends StatelessWidget {
                                   ),
                                 ),
                                 InkWell(onTap: () {
-                                  authProvider.signOut();
+                                  authProvider.signOut(context);
                                 },
                                   child: const Text(
                                     "LOGOUT",

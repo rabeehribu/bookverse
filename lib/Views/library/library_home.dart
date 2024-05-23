@@ -1,4 +1,3 @@
-import 'package:bookverse/Views/admin/userslist.dart';
 import 'package:bookverse/Views/library/view_books.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,19 +5,15 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 import '../../Controller/user_controller.dart';
+import '../admin/Publications.dart';
 import 'add_books.dart';
-
-
 
 class Library_Home extends StatelessWidget {
   const Library_Home({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    final authProvider =
-    Provider.of<UserAuthenticationProvider>(context, listen: false);
     return SafeArea(
-
       child: Scaffold(
         body: Stack(
           alignment: Alignment.center,
@@ -50,7 +45,6 @@ class Library_Home extends StatelessWidget {
                         ),
                       ),
                     )
-
                   ],
                 ),
               ),
@@ -60,75 +54,83 @@ class Library_Home extends StatelessWidget {
               child: SizedBox(
                 height: 230,
                 width: 290,
-                child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     buildMenuItem(
                       context,
                       "ADD BOOKS",
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AddBooks(),
-                            ));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddBooks(),
+                          ),
+                        );
                       },
                     ),
                     buildMenuItem(
                       context,
-                      "VIEW BOOKS ",
+                      "VIEW BOOKS",
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>  ViewBooks()));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewBooks(),
+                          ),
+                        );
                       },
                     ),
-
-                    buildMenuItem(
-                      context,
-                      "LOG OUT",
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                              backgroundColor: HexColor('C0A0A0'),
-                              title: const Text(
-                                "Are you sure,\nYou want to Logout?",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 19),
-                              ),
-                              actions:  [
-                                const Text(
-                                  "Cancel",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                InkWell(onTap: () {
-                                  authProvider.signOut();
-                                },
-                                  child: const Text(
-                                    "LOGOUT",
+                    Consumer<UserAuthenticationProvider>(
+                      builder: (context, authProvider, child) {
+                        return buildMenuItem(
+                          context,
+                          "LOG OUT",
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8)),
+                                  backgroundColor: HexColor('C0A0A0'),
+                                  title: const Text(
+                                    "Are you sure,\nYou want to Logout?",
                                     style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
                                         color: Colors.white,
-                                        shadows: [
-                                          Shadow(
-                                              offset: Offset(3, 3),
-                                              color: Colors.black)
-                                        ]),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 19),
                                   ),
-                                )
-                              ],
+                                  actions: [
+                                    const Text(
+                                      "Cancel",
+                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        authProvider.signOut(context);
+                                      },
+                                      child: const Text(
+                                        "LOGOUT",
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            shadows: [
+                                              Shadow(
+                                                  offset: Offset(3, 3),
+                                                  color: Colors.black)
+                                            ]),
+                                      ),
+                                    )
+                                  ],
+                                );
+                              },
                             );
                           },
                         );
                       },
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -172,20 +174,4 @@ class Library_Home extends StatelessWidget {
   }
 }
 
-// CustomPainter class to for the header curved-container
-class HeaderCurvedContainer extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = HexColor("C0A0A0");
-    Path path = Path()
-      ..relativeLineTo(0, 120)
-      ..quadraticBezierTo(size.width / 2, 200.0, size.width, 120)
-      ..relativeLineTo(0, -120)
-      ..close();
 
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
